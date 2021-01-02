@@ -81,6 +81,7 @@ class Option(models.Model):
 class Facility(models.Model):
     name                = models.CharField(max_length=64)
     facility_type       = models.ForeignKey("FacilityType",on_delete=models.CASCADE)
+    icon_url            = models.URLField(null=True)
 
     class Meta:
         db_table = "facilities"
