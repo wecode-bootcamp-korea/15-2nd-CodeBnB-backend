@@ -6,10 +6,10 @@ class User(models.Model):
     first_name          = models.CharField(max_length=32)
     email               = models.EmailField()
     password            = models.CharField(max_length=256)
-    birthday            = models.DateField()
+    birthday            = models.DateField(null=True)
     mailing_check       = models.BooleanField(default=False)
     created_at          = models.DateTimeField(auto_now_add=True)
-    profile_image       = models.URLField(default="https://i0.wp.com/prikachi.com/wp-content/uploads/2020/07/DPP1.jpg",max_length=512)
+    profile_image       = models.URLField(default="https://pbs.twimg.com/profile_images/1109389733912666112/XX55fTPf.jpg",max_length=512)
     bookmarks           = models.ManyToManyField("homes.Home",through="bookmarks.Bookmark",related_name="bookmark_users")
 
     class Meta:
