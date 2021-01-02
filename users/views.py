@@ -105,3 +105,4 @@ class KakaoSignInView(View):
 
         except json.JSONDecodeError:
             return JsonResponse({"MESSAGE" : "INVALID_DATA"},status=400) 
+
