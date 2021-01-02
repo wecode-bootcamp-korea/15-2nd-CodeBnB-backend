@@ -1,4 +1,4 @@
-from django.db    import models
+from django.db           import models
 
 class HomeType(models.Model):
     name = models.CharField(max_length=32)
@@ -145,6 +145,7 @@ class RoomBed(models.Model):
 class Review(models.Model):
     home        = models.ForeignKey("Home",on_delete=models.CASCADE)
     user        = models.ForeignKey("users.User",on_delete=models.CASCADE)
+    reservation = models.ForeignKey("reservations.Reservation",on_delete=models.CASCADE)
     contents    = models.TextField()
     created_at  = models.DateTimeField(auto_now_add=True)
     updated_at  = models.DateTimeField(auto_now=True,null=True)
