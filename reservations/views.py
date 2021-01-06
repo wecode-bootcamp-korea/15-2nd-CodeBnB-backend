@@ -5,7 +5,7 @@ from django.http import JsonResponse
 from django.db.models import Q
 from django.db import transaction
 
-from users.utils import ConfirmLogin
+from users.utils import ConfirmLogin, CheckUser
 from codebnb.settings import SECRET_KEY
 from users.models  import User
 from reservations.models import (
@@ -49,7 +49,7 @@ class ReservationView(View):
                 )
                 
                 reservation = Reservation.objects.create(
-                    user_id      = user,
+                    user_id   = user,
                     home_id   = data['home_id'],
                     check_in  = data['check_in'],
                     check_out = data['check_out'],
@@ -97,11 +97,11 @@ class ReservationView(View):
                 "home__home_host__user"
                 ).filter(user_id=user)
             
-            if status == "upcomming":                                      
+            if status == "upcoming":                                      
                 reservations = reservations.filter(status__name="결제완료") 
             if status == "past":                                           
                 reservations = reservations.filter(status__name="이용완료")
-            if status == "cancle":
+            if status == "cancel":
                 reservations = reservations.filter(status__name="예약취소")
             
             if not reservations:                                            

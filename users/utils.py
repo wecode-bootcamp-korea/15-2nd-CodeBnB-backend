@@ -3,11 +3,14 @@ import json
 import re
 from users.models import User
 from my_settings  import SECRET_KEY,JWT_ALGORITHM
-from django.http  import JsonResponse
+from django.http  import JsonResponse, request
 
 def ConfirmLogin(original_function):
     def wrapper(self, request, *args, **kwargs):
+        print(request.headers)
         token = request.headers.get("Authorization", None)
+        
+        print(token)
         try:
             if token:
                 token_payload = jwt.decode(token, SECRET_KEY, algorithms=JWT_ALGORITHM)
