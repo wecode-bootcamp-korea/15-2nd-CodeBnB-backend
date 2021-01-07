@@ -30,13 +30,13 @@ class ReservationView(View):
             adult_count    = data['adult']
             children_count = data['children']
             infant_count   = data['infant']
-
+            
             hash_card_number  = jwt.encode({"card_number" : data['card_number']}, "SECRET_KEY", algorithm='HS256')
             hash_expire_date  = jwt.encode({"expire_date" : data['expire_date']}, "SECRET_KEY", algorithm='HS256')
             hash_post_code    = jwt.encode({"post_code" : data['post_code']}, "SECRET_KEY", algorithm='HS256')
             hash_payment_date = jwt.encode({"payment_date" : data['payment_date']}, "SECRET_KEY", algorithm='HS256')
             hash_card_holder  = jwt.encode({"card_holder" : data['card_holder']}, "SECRET_KEY", algorithm='HS256')
-           
+            
             with transaction.atomic():
                 payment = Payment.objects.create( 
                     method       = PaymentMethod.objects.get(name="신용카드 또는 체크카드"),
@@ -109,7 +109,8 @@ class ReservationView(View):
                 
             context = [{                                                                
                 'resrvation_id': reservation.id,   
-                'home_id'      : reservation.home.id,                                           
+                'home_id'      : reservation.home.id,
+                'home_name'    : reservation.home.name,                                      
                 'status'       : reservation.status.name,
                 'address'      : reservation.home.address,
                 'start_date'   : reservation.check_in,
@@ -133,7 +134,8 @@ class ReservationDetailView(View):
             "home__homerule_set",
             "home__homerule_set__rule",         
             "home__images",
-            "home__home_host"
+            "home__home_host",
+            "payment"
             ).get(id=reservation_pk)
             
             Host = reservation.home.home_host.first() 
@@ -151,7 +153,8 @@ class ReservationDetailView(View):
                 "latitude"          : reservation.home.latitude, 
                 "longitude"         : reservation.home.longitude, 
                 "guest_number"      : sum([guest.count for guest in reservation.reservationguest_set.all()]),
-                "room_type"         : reservation.home.home_type.name
+                "room_type"         : reservation.home.home_type.name,
+                "total_cost"        : reservation.payment.total_cost
                 }
 
             for rule in reservation.home.homerule_set.all():

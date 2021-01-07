@@ -7,7 +7,6 @@ from django.http  import JsonResponse, request
 
 def ConfirmLogin(original_function):
     def wrapper(self, request, *args, **kwargs):
-        print(request.headers)
         token = request.headers.get("Authorization", None)
         
         print(token)
